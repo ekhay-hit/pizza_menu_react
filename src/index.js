@@ -8,42 +8,42 @@ const menuData = [
     name: "Tagine ",
     ingredients: "Split Chicken Breasts with a Saucy, Moroccan Twist",
     price: 16,
-    photoName: "pizzas/chicken_tagine.jpg",
+    photoName: "menu_items/chicken_tagine.jpg",
     soldOut: false,
   },
   {
     name: "Couscous",
     ingredients: "Couscous with vegetables, meat, and tfaya,",
     price: 15,
-    photoName: "pizzas/couscous.jpg",
+    photoName: "menu_items/couscous.jpg",
     soldOut: false,
   },
   {
     name: "Mixed platter",
     ingredients: "Chicken Kabob, beef and merguez ",
     price: 12,
-    photoName: "pizzas/mixed_platter.jpg",
+    photoName: "menu_items/mixed_platter.jpg",
     soldOut: false,
   },
   {
     name: "Chicken Kabob",
     ingredients: "Chicken Kabob, rice, salad",
     price: 13,
-    photoName: "pizzas/chicken_kabob.jpg",
+    photoName: "menu_items/chicken_kabob.jpg",
     soldOut: false,
   },
   {
     name: "Kofta Sandwich",
     ingredients: "Ground beef, mixed-salad, and frize",
     price: 15,
-    photoName: "pizzas/Kofta_Sandwich.jpg",
+    photoName: "menu_items/Kofta_Sandwich.jpg",
     soldOut: true,
   },
   {
     name: "Vegetable Pizza",
     ingredients: "olives, spinach, and mozarella cheese",
     price: 18,
-    photoName: "pizzas/pizza_vegetable.jpg",
+    photoName: "menu_items/pizza_vegetable.jpg",
     soldOut: false,
   },
 ];
@@ -88,13 +88,13 @@ function Menu() {
   return (
     <main className="menu">
       <h2>Our menu</h2>
-      {menuData.length > 0 && (
+      {menuData.length > 0 ? (
         <ul className="foods">
           {menuData.map((food) => (
             <Food objectFood={food} key={food.name} />
           ))}
         </ul>
-      )}
+      ) : null}
     </main>
   );
 }
@@ -108,26 +108,31 @@ function Footer() {
   const isOpen = hour >= openHour && hour <= closeHour;
   return (
     <footer className="footer">
-      {isOpen && (
+      {isOpen ? (
         <div className="order">
           <p> We are open until {closeHour}:00.</p>
           <span>Come visit us or order online.</span>
           <button className="btn">Order</button>
         </div>
+      ) : (
+        <p>
+          Sorry we are closed now; we are happy to welcome you between{" "}
+          {openHour}am and {closeHour}pm
+        </p>
       )}
     </footer>
   );
 }
 
 // Pizza component This will be render in Menu component, and menu will be render in main app
-function Food(props) {
+function Food({ objectFood }) {
   return (
-    <li className="food">
-      <img src={props.objectFood.photoName} alt={props.objectFood.name} />
+    <li className={`food ${objectFood.soldOut ? "sold-out" : ""}`}>
+      <img src={objectFood.photoName} alt={objectFood.name} />
       <div>
-        <h3>{props.objectFood.name}</h3>
-        <p>{props.objectFood.ingredients} </p>
-        <span>{props.objectFood.price}</span>
+        <h3>{objectFood.name}</h3>
+        <p>{objectFood.ingredients} </p>
+        <span>{objectFood.soldOut ? "SOLD OUT" : objectFood.price}</span>
       </div>
     </li>
   );
