@@ -3,55 +3,55 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 
 // data
-const pizzaData = [
+const menuData = [
   {
-    name: "Focaccia",
-    ingredients: "Bread with italian olive oil and rosemary",
-    price: 6,
-    photoName: "pizzas/focaccia.jpg",
+    name: "Tagine ",
+    ingredients: "Split Chicken Breasts with a Saucy, Moroccan Twist",
+    price: 16,
+    photoName: "pizzas/chicken_tagine.jpg",
     soldOut: false,
   },
   {
-    name: "Pizza Margherita",
-    ingredients: "Tomato and mozarella",
-    price: 10,
-    photoName: "pizzas/margherita.jpg",
-    soldOut: false,
-  },
-  {
-    name: "Pizza Spinaci",
-    ingredients: "Tomato, mozarella, spinach, and ricotta cheese",
-    price: 12,
-    photoName: "pizzas/spinaci.jpg",
-    soldOut: false,
-  },
-  {
-    name: "Pizza Funghi",
-    ingredients: "Tomato, mozarella, mushrooms, and onion",
-    price: 12,
-    photoName: "pizzas/funghi.jpg",
-    soldOut: false,
-  },
-  {
-    name: "Pizza Salamino",
-    ingredients: "Tomato, mozarella, and pepperoni",
+    name: "Couscous",
+    ingredients: "Couscous with vegetables, meat, and tfaya,",
     price: 15,
-    photoName: "pizzas/salamino.jpg",
+    photoName: "pizzas/couscous.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Mixed platter",
+    ingredients: "Chicken Kabob, beef and merguez ",
+    price: 12,
+    photoName: "pizzas/mixed_platter.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Chicken Kabob",
+    ingredients: "Chicken Kabob, rice, salad",
+    price: 13,
+    photoName: "pizzas/chicken_kabob.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Kofta Sandwich",
+    ingredients: "Ground beef, mixed-salad, and frize",
+    price: 15,
+    photoName: "pizzas/Kofta_Sandwich.jpg",
     soldOut: true,
   },
   {
-    name: "Pizza Prosciutto",
-    ingredients: "Tomato, mozarella, ham, aragula, and burrata cheese",
+    name: "Vegetable Pizza",
+    ingredients: "olives, spinach, and mozarella cheese",
     price: 18,
-    photoName: "pizzas/prosciutto.jpg",
+    photoName: "pizzas/pizza_vegetable.jpg",
     soldOut: false,
   },
 ];
 
+// Main app
 function App() {
   return (
     <div className="container">
-      <h1>Hello ReactDOM</h1>;
       <Header />
       <Menu />
       <Footer />
@@ -59,35 +59,47 @@ function App() {
   );
 }
 
+// selecting where the main up should be rendered
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
+// rendering main app
 root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
 );
 
+// componenets that are added to main app
+// header component
 function Header() {
   return (
     <header className="header">
       <h1
         style={{ color: "red", fontSize: "48px", textTransform: "uppercase" }}
       >
-        Fast React Pizza Co.
+        Fast React Moroccan Co.
       </h1>
     </header>
   );
 }
 
+// Menu component
 function Menu() {
   return (
     <main className="menu">
       <h2>Our menu</h2>
-      <Pizza />
+      {menuData.length > 0 && (
+        <ul className="foods">
+          {menuData.map((food) => (
+            <Food objectFood={food} key={food.name} />
+          ))}
+        </ul>
+      )}
     </main>
   );
 }
 
+// footer component
 function Footer() {
   //   return React.createElement("footer", null, "Wea are currently open");
   const hour = new Date().getHours();
@@ -96,17 +108,27 @@ function Footer() {
   const isOpen = hour >= openHour && hour <= closeHour;
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()}. We are currentley open
+      {isOpen && (
+        <div className="order">
+          <p> We are open until {closeHour}:00.</p>
+          <span>Come visit us or order online.</span>
+          <button className="btn">Order</button>
+        </div>
+      )}
     </footer>
   );
 }
 
-function Pizza() {
+// Pizza component This will be render in Menu component, and menu will be render in main app
+function Food(props) {
   return (
-    <div>
-      <img src="pizzas/focaccia.jpg" alt="Pizza spinach" />
-      <h3>Focaccia</h3>
-      <p>Bread with italian olive oil and rosemary </p>
-    </div>
+    <li className="food">
+      <img src={props.objectFood.photoName} alt={props.objectFood.name} />
+      <div>
+        <h3>{props.objectFood.name}</h3>
+        <p>{props.objectFood.ingredients} </p>
+        <span>{props.objectFood.price}</span>
+      </div>
+    </li>
   );
 }
